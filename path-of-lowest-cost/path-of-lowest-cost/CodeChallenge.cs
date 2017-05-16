@@ -8,21 +8,22 @@ namespace path_of_lowest_cost
         private readonly int _columns;
         private int[,] _array;
 
-        public CodeChallenge(int rows, int columns)
+        public CodeChallenge(int columns, int rows)
         {
-            if (rows <= 0)
+            if (rows < 0)
             {
-                throw new ArgumentOutOfRangeException("Cannot initialize CodeChallenge with negative or zero rows");
+                throw new ArgumentOutOfRangeException("you must have at least 1 row");
             }
 
-            if (columns <= 0)
+            if (columns <= 4)
             {
-                throw new ArgumentOutOfRangeException("Cannot initialize CodeChallenge with negative or zero columns");
+                throw new ArgumentOutOfRangeException("columns", "you must have at least 5 columns");
             }
 
             _rows = rows;
             _columns = columns;
-            _array = new int[_columns, _rows];
+            //_array = new int[_rows, _columns];
+            _array = new int[5, 0];
         }
 
         public int[,] GetArray()
@@ -30,7 +31,7 @@ namespace path_of_lowest_cost
             return _array;
         }
 
-        public void AddValueToArray(int row, int column, int value)
+        public void AddValueToArray(int column, int row, int value)
         {
             if (row < 0)
             {
@@ -44,6 +45,7 @@ namespace path_of_lowest_cost
 
             _array[column, row] = value;
         }
+
 
     }
 }

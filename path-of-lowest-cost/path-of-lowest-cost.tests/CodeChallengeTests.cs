@@ -13,10 +13,10 @@ namespace path_of_lowest_cost.tests
             // nothing to do
 
             // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(2, -2));
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(-1, 0));
 
             // assert
-            StringAssert.Contains("Cannot initialize CodeChallenge with negative or zero columns", ex.Message);
+            StringAssert.Contains("you must have at least 5 columns", ex.Message);
         }
 
         [Test]
@@ -26,10 +26,10 @@ namespace path_of_lowest_cost.tests
             // nothing to do
 
             // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(-2, 2));
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(0, -1));
 
             // assert
-            StringAssert.Contains("Cannot initialize CodeChallenge with negative or zero rows", ex.Message);
+            StringAssert.Contains("you must have at least 1 row", ex.Message);
         }
 
         [TestFixture]
@@ -39,8 +39,8 @@ namespace path_of_lowest_cost.tests
             public void Should_return_a_multi_dimensional_array()
             {
                 // arrange
-                var testArray = new int[2, 2];
-                var sut = new CodeChallenge(2, 2);
+                var testArray = new int[0, 5];
+                var sut = new CodeChallenge(5, 0);
 
                 // act
                 var result = sut.GetArray();
@@ -57,10 +57,10 @@ namespace path_of_lowest_cost.tests
             public void Should_throw_IndexOutOfRangeException_with_invalid_column_parameter()
             {
                 // arrange
-                var sut = new CodeChallenge(2, 2);
+                var sut = new CodeChallenge(5, 0);
 
                 // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(2, -1, 1));
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-2, 1, 1));
 
                 // assert
                 StringAssert.Contains("column must not be a negative number", ex.Message);
@@ -70,10 +70,10 @@ namespace path_of_lowest_cost.tests
             public void Should_throw_IndexOutOfRangeException_with_invalid_row_parameter()
             {
                 // arrange
-                var sut = new CodeChallenge(2, 2);
+                var sut = new CodeChallenge(5, 0);
 
                 // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-2, 1, 1));
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(5, -1, 1));
 
                 // assert
                 StringAssert.Contains("row must not be a negative number", ex.Message);
@@ -83,18 +83,17 @@ namespace path_of_lowest_cost.tests
             public void Should_insert_positive_value_at_specified_array_location()
             {
                 // arrange
-                var testArray = new int[ , ] {
-                    {0, 5}, 
-                    {0, 0}
+                var testArray = new int[,] {
+                    {0, 0, 0, 0, 5}
                 };
-                var sut = new CodeChallenge(2, 2);
+                var sut = new CodeChallenge(5, 0);
 
                 // act
-                sut.AddValueToArray(1, 0, 5);
+                sut.AddValueToArray(0, 5, 5);
                 var result = sut.GetArray();
 
                 // assert
-                Assert.AreEqual(testArray[0, 1], result[0, 1]);
+                Assert.AreEqual(testArray[0, 4], result[0, 4]);
             }
 
             [Test]
@@ -102,17 +101,16 @@ namespace path_of_lowest_cost.tests
             {
                 // arrange
                 var testArray = new int[,] {
-                    {0, -5},
-                    {0, 0}
+                    {0, 0, 0, 0, -5}
                 };
-                var sut = new CodeChallenge(2, 2);
+                var sut = new CodeChallenge(5, 1);
 
                 // act
-                sut.AddValueToArray(1, 0, -5);
+                sut.AddValueToArray(0, 4, -5);
                 var result = sut.GetArray();
 
                 // assert
-                Assert.AreEqual(testArray[0, 1], result[0, 1]);
+                Assert.AreEqual(testArray[0, 4], result[0, 4]);
             }
         }
     }
