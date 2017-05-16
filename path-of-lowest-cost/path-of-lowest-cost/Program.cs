@@ -10,7 +10,7 @@ namespace path_of_lowest_cost
     {
         static void Main(string[] args)
         {
-            var challenge = new CodeChallenge();
+            // var challenge = new CodeChallenge();
 
 
         }

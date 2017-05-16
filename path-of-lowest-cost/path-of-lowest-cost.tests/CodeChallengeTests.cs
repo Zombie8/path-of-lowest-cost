@@ -1,0 +1,119 @@
+﻿using System;
+using NUnit.Framework;
+
+namespace path_of_lowest_cost.tests
+{
+    [TestFixture]
+    public class CodeChallengeTests
+    {
+        [Test]
+        public void Should_throw_ArgumentOutOfRangeException_with_invalid_column_parameter()
+        {
+            // arrange
+            // nothing to do
+
+            // act
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(2, -2));
+
+            // assert
+            StringAssert.Contains("Cannot initialize CodeChallenge with negative or zero columns", ex.Message);
+        }
+
+        [Test]
+        public void Should_throw_ArgumentOutOfRangeException_with_invalid_row_parameter()
+        {
+            // arrange
+            // nothing to do
+
+            // act
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(-2, 2));
+
+            // assert
+            StringAssert.Contains("Cannot initialize CodeChallenge with negative or zero rows", ex.Message);
+        }
+
+        [TestFixture]
+        internal class GetArray
+        {
+            [Test]
+            public void Should_return_a_multi_dimensional_array()
+            {
+                // arrange
+                var testArray = new int[2, 2];
+                var sut = new CodeChallenge(2, 2);
+
+                // act
+                var result = sut.GetArray();
+
+                // assert
+                Assert.AreEqual(testArray, result);
+            }
+        }
+
+        [TestFixture]
+        internal class AddValueToArray
+        {
+            [Test]
+            public void Should_throw_IndexOutOfRangeException_with_invalid_column_parameter()
+            {
+                // arrange
+                var sut = new CodeChallenge(2, 2);
+
+                // act
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(2, -1, 1));
+
+                // assert
+                StringAssert.Contains("column must not be a negative number", ex.Message);
+            }
+
+            [Test]
+            public void Should_throw_IndexOutOfRangeException_with_invalid_row_parameter()
+            {
+                // arrange
+                var sut = new CodeChallenge(2, 2);
+
+                // act
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-2, 1, 1));
+
+                // assert
+                StringAssert.Contains("row must not be a negative number", ex.Message);
+            }
+
+            [Test]
+            public void Should_insert_positive_value_at_specified_array_location()
+            {
+                // arrange
+                var testArray = new int[ , ] {
+                    {0, 5}, 
+                    {0, 0}
+                };
+                var sut = new CodeChallenge(2, 2);
+
+                // act
+                sut.AddValueToArray(1, 0, 5);
+                var result = sut.GetArray();
+
+                // assert
+                Assert.AreEqual(testArray[0, 1], result[0, 1]);
+            }
+
+            [Test]
+            public void Should_insert_negative_value_at_specified_array_location()
+            {
+                // arrange
+                var testArray = new int[,] {
+                    {0, -5},
+                    {0, 0}
+                };
+                var sut = new CodeChallenge(2, 2);
+
+                // act
+                sut.AddValueToArray(1, 0, -5);
+                var result = sut.GetArray();
+
+                // assert
+                Assert.AreEqual(testArray[0, 1], result[0, 1]);
+            }
+        }
+    }
+}
