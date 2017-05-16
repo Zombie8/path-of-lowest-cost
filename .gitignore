@@ -1,1 +1,6 @@
 .git
+packages/
+.vs/
+bin/
+obj/
+
