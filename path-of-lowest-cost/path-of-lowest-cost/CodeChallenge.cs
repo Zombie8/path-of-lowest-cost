@@ -8,6 +8,9 @@ namespace path_of_lowest_cost
         private readonly int _columns;
         private int[,] _array;
 
+        public int[] selectedColumnValues { get; set; }
+        public int solution { get; set; }
+
         public CodeChallenge(int rows, int columns)
         {
             if (rows <= 0)
@@ -45,16 +48,18 @@ namespace path_of_lowest_cost
             _array[row, column] = value;
         }
 
-        public string Solve()
+        public bool Solve(int startingRowIndex)
         {
-            var solution = 0;
+            solution = 0;
+            selectedColumnValues = new int[_columns];
+
             var rowNumber = 0;
             var columnNumber = 0;
 
-            var rowMaxHeight = _array.GetLength(0);     // row dimensions
-            var columnMaxLength = _array.GetLength(1);  // column dimensions
+            var rowMaxHeight = _array.GetLength(0);
+            var columnMaxLength = _array.GetLength(1);
 
-            while (columnNumber <= columnMaxLength - 1)
+            while (columnNumber < columnMaxLength - 1)
             {
                 var tempRowNumber = rowNumber + 1;
                 if(tempRowNumber > rowMaxHeight)
@@ -76,24 +81,32 @@ namespace path_of_lowest_cost
                 if (direction == "upper")
                 {
                     rowNumber = upperValue;
+                    selectedColumnValues[columnNumber] = tempRowNumber + 1;
                     solution = solution + _array[tempRowNumber, columnNumber];
                 }
 
                 if (direction == "horizontal")
                 {
+                    selectedColumnValues[columnNumber] = rowNumber + 1;
                     solution = solution + _array[rowNumber, columnNumber];
                 }
 
                 if (direction == "lower")
                 {
                     rowNumber = lowerValue;
+                    selectedColumnValues[columnNumber] = tempRowNumber2 + 1;
                     solution = solution + _array[tempRowNumber2, columnNumber];
+                }
+
+                if (solution > 50)
+                {
+                    return false;
                 }
 
                 columnNumber++;
             }
 
-            return solution.ToString();
+            return true;
         }
 
         private string GetLeastCost(int upper, int horizontal, int lower)
