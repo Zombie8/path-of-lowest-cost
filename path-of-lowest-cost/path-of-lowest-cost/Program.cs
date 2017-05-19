@@ -10,6 +10,8 @@ namespace path_of_lowest_cost
     {
         static void Main(string[] args)
         {
+            // take in input
+
             // var challenge = new CodeChallenge();
 
 
