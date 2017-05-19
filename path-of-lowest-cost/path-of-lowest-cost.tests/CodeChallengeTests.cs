@@ -60,7 +60,7 @@ namespace path_of_lowest_cost.tests
                 var sut = new CodeChallenge(1, 5);
 
                 // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-2, 1, 1));
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(1, -2, 1));
 
                 // assert
                 StringAssert.Contains("column must not be a negative number", ex.Message);
@@ -73,7 +73,7 @@ namespace path_of_lowest_cost.tests
                 var sut = new CodeChallenge(1, 5);
 
                 // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(5, -1, 1));
+                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-1, 5, 1));
 
                 // assert
                 StringAssert.Contains("row must not be a negative number", ex.Message);
