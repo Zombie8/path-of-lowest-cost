@@ -13,7 +13,7 @@ namespace path_of_lowest_cost.tests
             // nothing to do
 
             // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(-1, 0));
+            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(1, 3));
 
             // assert
             StringAssert.Contains("you must have at least 5 columns", ex.Message);
@@ -39,8 +39,8 @@ namespace path_of_lowest_cost.tests
             public void Should_return_a_multi_dimensional_array()
             {
                 // arrange
-                var testArray = new int[0, 5];
-                var sut = new CodeChallenge(5, 0);
+                var testArray = new int[1, 5];
+                var sut = new CodeChallenge(1, 5);
 
                 // act
                 var result = sut.GetArray();
@@ -57,7 +57,7 @@ namespace path_of_lowest_cost.tests
             public void Should_throw_IndexOutOfRangeException_with_invalid_column_parameter()
             {
                 // arrange
-                var sut = new CodeChallenge(5, 0);
+                var sut = new CodeChallenge(1, 5);
 
                 // act
                 var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-2, 1, 1));
@@ -70,7 +70,7 @@ namespace path_of_lowest_cost.tests
             public void Should_throw_IndexOutOfRangeException_with_invalid_row_parameter()
             {
                 // arrange
-                var sut = new CodeChallenge(5, 0);
+                var sut = new CodeChallenge(1, 5);
 
                 // act
                 var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(5, -1, 1));
@@ -86,10 +86,10 @@ namespace path_of_lowest_cost.tests
                 var testArray = new int[,] {
                     {0, 0, 0, 0, 5}
                 };
-                var sut = new CodeChallenge(5, 0);
+                var sut = new CodeChallenge(1, 5);
 
                 // act
-                sut.AddValueToArray(0, 5, 5);
+                sut.AddValueToArray(0, 4, 5);
                 var result = sut.GetArray();
 
                 // assert
@@ -103,7 +103,7 @@ namespace path_of_lowest_cost.tests
                 var testArray = new int[,] {
                     {0, 0, 0, 0, -5}
                 };
-                var sut = new CodeChallenge(5, 1);
+                var sut = new CodeChallenge(1, 5);
 
                 // act
                 sut.AddValueToArray(0, 4, -5);

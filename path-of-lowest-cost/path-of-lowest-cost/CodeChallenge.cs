@@ -8,9 +8,9 @@ namespace path_of_lowest_cost
         private readonly int _columns;
         private int[,] _array;
 
-        public CodeChallenge(int columns, int rows)
+        public CodeChallenge(int rows, int columns)
         {
-            if (rows < 0)
+            if (rows <= 0)
             {
                 throw new ArgumentOutOfRangeException("you must have at least 1 row");
             }
@@ -22,8 +22,7 @@ namespace path_of_lowest_cost
 
             _rows = rows;
             _columns = columns;
-            //_array = new int[_rows, _columns];
-            _array = new int[5, 0];
+            _array = new int[_rows, _columns];
         }
 
         public int[,] GetArray()
