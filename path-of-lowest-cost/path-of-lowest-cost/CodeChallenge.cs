@@ -109,7 +109,16 @@ namespace path_of_lowest_cost
             return true;
         }
 
-        private string GetLeastCost(int upper, int horizontal, int lower)
+        public Tuple<string, int, int[]> Solve2()
+        {
+            var selectedColumns = new int[_columns];
+            var startingIndex = GetStartingIndex();
+
+
+            return new Tuple<string, int, int[]>("test", 1, new int[1] { 1 });
+        }
+
+        public string GetLeastCost(int upper, int horizontal, int lower)
         {
             if (upper < horizontal)
             {
@@ -127,6 +136,19 @@ namespace path_of_lowest_cost
             }
 
             return "lower";
+        }
+
+        public Tuple<int, int> GetStartingIndex()
+        {
+            int lowestValue;
+            int lowestValueRow;
+
+            // iterate through each value in column 1 and if the value is the smallest return it
+            for(int i = 1; i < _array.GetLength(0); i++)
+            {
+
+            }
+
         }
     }
 }

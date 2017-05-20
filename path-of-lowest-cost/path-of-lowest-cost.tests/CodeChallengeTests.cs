@@ -113,5 +113,86 @@ namespace path_of_lowest_cost.tests
                 Assert.AreEqual(testArray[0, 4], result[0, 4]);
             }
         }
+
+        [TestFixture]
+        internal class GetLeastCost
+        {
+            [Test]
+            public void Should_return_upper_value()
+            {
+                // arrange
+                var sut = new CodeChallenge(1, 5);
+
+                // act
+                var result = sut.GetLeastCost(5, 10, 10);
+
+                // assert
+                Assert.AreEqual("upper", result);
+            }
+
+            [Test]
+            public void Should_return_horizontal_value()
+            {
+                // arrange
+                var sut = new CodeChallenge(1, 5);
+
+                // act
+                var result = sut.GetLeastCost(10, 5, 10);
+
+                // assert
+                Assert.AreEqual("horizontal", result);
+            }
+
+            [Test]
+            public void Should_return_lower_value()
+            {
+                // arrange
+                var sut = new CodeChallenge(1, 5);
+
+                // act
+                var result = sut.GetLeastCost(10, 10, 5);
+
+                // assert
+                Assert.AreEqual("lower", result);
+            }
+        }
+
+        [TestFixture]
+        internal class Solve2
+        {
+            [Test]
+            public void Should_return_a_tuple_data_structure()
+            {
+                // arrange
+                var sut = new CodeChallenge(1, 5);
+
+                // act
+                var result = sut.Solve2();
+
+                // assert
+                Assert.IsInstanceOf<Tuple<string, int, int[]>>(result);
+            }
+
+            [Test]
+            public void Should_return_successful_outcome()
+            {
+                // arrange
+                var expectedresult = new Tuple<string, int, int[]>("Yes", 5, new int[] { 1, 1, 1, 1, 1 });
+
+                var sut = new CodeChallenge(1, 5);
+                sut.AddValueToArray(0, 0, 1);
+                sut.AddValueToArray(0, 1, 1);
+                sut.AddValueToArray(0, 2, 1);
+                sut.AddValueToArray(0, 3, 1);
+                sut.AddValueToArray(0, 4, 1);
+
+                // act
+                var actualResult = sut.Solve2();
+
+                // assert
+                Assert.AreEqual(expectedresult, actualResult);
+
+            }
+        }
     }
 }
