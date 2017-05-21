@@ -8,6 +8,9 @@ namespace path_of_lowest_cost
         private readonly int _columns;
         private int[,] _array;
 
+        public int[] selectedColumnValues { get; set; }
+        public int solution { get; set; }
+
         public CodeChallenge(int rows, int columns)
         {
             if (rows <= 0)
@@ -30,7 +33,7 @@ namespace path_of_lowest_cost
             return _array;
         }
 
-        public void AddValueToArray(int column, int row, int value)
+        public void AddValueToArray(int row, int column, int value)
         {
             if (row < 0)
             {
@@ -42,9 +45,103 @@ namespace path_of_lowest_cost
                 throw new IndexOutOfRangeException("column must not be a negative number");
             }
 
-            _array[column, row] = value;
+            _array[row, column] = value;
         }
 
+        public bool Solve(int startingRowIndex)
+        {
+            solution = 0;
+            selectedColumnValues = new int[_columns];
 
+            var rowNumber = 0;
+            var columnNumber = 0;
+
+            var rowMaxHeight = _array.GetLength(0);
+            var columnMaxLength = _array.GetLength(1);
+
+            while (columnNumber < columnMaxLength - 1)
+            {
+                var horizontalValue = _array[rowNumber, columnNumber];
+
+                var tempRowNumber2 = rowNumber - 1;
+                if (tempRowNumber2 < 0)
+                {
+                    tempRowNumber2 = rowMaxHeight - 1;
+                }
+                var lowerValue = _array[tempRowNumber2, columnNumber];
+
+                var direction = GetLeastCost(upperValue, horizontalValue, lowerValue);
+                if (direction == "upper")
+                {
+                    rowNumber = upperValue;
+                    selectedColumnValues[columnNumber] = tempRowNumber + 1;
+                    solution = solution + _array[tempRowNumber, columnNumber];
+                }
+
+                if (direction == "horizontal")
+                {
+                    selectedColumnValues[columnNumber] = rowNumber + 1;
+                    solution = solution + _array[rowNumber, columnNumber];
+                }
+
+                if (direction == "lower")
+                {
+                    rowNumber = lowerValue;
+                    selectedColumnValues[columnNumber] = tempRowNumber2 + 1;
+                    solution = solution + _array[tempRowNumber2, columnNumber];
+                }
+
+                if (solution > 50)
+                {
+                    return false;
+                }
+
+                columnNumber++;
+            }
+
+            return true;
+        }
+
+        public Tuple<string, int, int[]> Solve2()
+        {
+            var selectedColumns = new int[_columns];
+            var startingIndex = GetStartingIndex();
+
+
+            return new Tuple<string, int, int[]>("test", 1, new int[1] { 1 });
+        }
+
+        public string GetLeastCost(int upper, int horizontal, int lower)
+        {
+            if (upper < horizontal)
+            {
+                if (upper < lower)
+                {
+                    return "upper";
+                }
+            }
+            else if (horizontal < upper)
+            {
+                if(horizontal < lower)
+                {
+                    return "horizontal";
+                }
+            }
+
+            return "lower";
+        }
+
+        //public Tuple<int, int> GetStartingIndex()
+        //{
+        //    int lowestValue;
+        //    int lowestValueRow;
+
+        //    // iterate through each value in column 1 and if the value is the smallest return it
+        //    for(int i = 1; i < _array.GetLength(0); i++)
+        //    {
+
+        //    }
+
+        //}
     }
 }
