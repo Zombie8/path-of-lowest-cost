@@ -33,11 +33,14 @@ namespace path_of_lowest_cost
         private void attemptChallenge(int row)
         {
             var newAttempt = new Attempt();
+            var workingRow = row;
 
-            for (int i = 0; i < _grid.GetLength(1); i++)
+            for (int columnIndex = 0; columnIndex < _grid.GetLength(1); columnIndex++)
             {
-                newAttempt.solutionTotal += _grid[row, i];
-                newAttempt.selectedMatrixPoints.Add(row + 1);
+                workingRow  = nextMove(workingRow, columnIndex);
+
+                newAttempt.solutionTotal += _grid[workingRow, columnIndex];
+                newAttempt.selectedMatrixPoints.Add(workingRow + 1);
 
                 if (newAttempt.solutionTotal > 50)
                 {
@@ -47,6 +50,59 @@ namespace path_of_lowest_cost
             }
 
             _attempts.Add(newAttempt);
+        }
+
+        private int nextMove(int row, int column)
+        {
+            var columnHeight = _grid.GetLength(0);
+            var didUpValFlip = false;
+            var didDownValFlip = false;
+
+            int upVal;
+            if (row + 1 >= columnHeight)
+            {
+                upVal = _grid[0, column];
+                didUpValFlip = true;
+            }
+            else
+            {
+                upVal = _grid[row + 1, column];
+            }
+
+            var rightVal = _grid[row, column];
+
+            int downVal;
+            if(row - 1 <= 0)
+            {
+                downVal = _grid[columnHeight - 1, column];
+                didDownValFlip = true;
+            }
+            else
+            {
+                downVal = _grid[row - 1, column];
+            }
+
+            if (upVal < rightVal && upVal < downVal)
+            {
+                if (didUpValFlip)
+                {
+                    return 0;
+                }
+                return row + 1;
+            }
+            else if (rightVal < downVal)
+            {
+                return row;
+            }
+            else
+            {
+                if (didDownValFlip)
+                {
+                    return columnHeight - 1;
+                }
+                return row - 1;
+            }
+
         }
     }
 
