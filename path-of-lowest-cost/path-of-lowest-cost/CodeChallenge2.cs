@@ -32,15 +32,15 @@ namespace path_of_lowest_cost
 
         private void attemptChallenge(int row)
         {
-            var newAttempt = new Attempt();
-            var workingRow = row;
+            var newAttempt = new Attempt(row, _grid[row, 0]);
+            var rowIndex = row;
 
-            for (int columnIndex = 0; columnIndex < _grid.GetLength(1); columnIndex++)
+            for (int columnIndex = 1; columnIndex < _grid.GetLength(1); columnIndex++)
             {
-                workingRow  = nextMove(workingRow, columnIndex);
+                rowIndex = nextMove(rowIndex, columnIndex);
 
-                newAttempt.solutionTotal += _grid[workingRow, columnIndex];
-                newAttempt.selectedMatrixPoints.Add(workingRow + 1);
+                newAttempt.solutionTotal += _grid[rowIndex, columnIndex];
+                newAttempt.selectedMatrixPoints.Add(rowIndex + 1);
 
                 if (newAttempt.solutionTotal > 50)
                 {
@@ -54,12 +54,12 @@ namespace path_of_lowest_cost
 
         private int nextMove(int row, int column)
         {
-            var columnHeight = _grid.GetLength(0);
+            var rowHeight = _grid.GetLength(0);
             var didUpValFlip = false;
             var didDownValFlip = false;
 
             int upVal;
-            if (row + 1 >= columnHeight)
+            if (row + 1 >= rowHeight)
             {
                 upVal = _grid[0, column];
                 didUpValFlip = true;
@@ -72,9 +72,9 @@ namespace path_of_lowest_cost
             var rightVal = _grid[row, column];
 
             int downVal;
-            if(row - 1 <= 0)
+            if(row - 1 < 0)
             {
-                downVal = _grid[columnHeight - 1, column];
+                downVal = _grid[rowHeight - 1, column];
                 didDownValFlip = true;
             }
             else
@@ -98,7 +98,7 @@ namespace path_of_lowest_cost
             {
                 if (didDownValFlip)
                 {
-                    return columnHeight - 1;
+                    return rowHeight - 1;
                 }
                 return row - 1;
             }
@@ -112,10 +112,11 @@ namespace path_of_lowest_cost
         public int solutionTotal { get; set; }
         public List<int> selectedMatrixPoints { get; set; }
 
-        public Attempt()
+        public Attempt(int startingRow, int startingValue)
         {
             isSolved = "Yes";
-            selectedMatrixPoints = new List<int>();
+            selectedMatrixPoints = new List<int>() { startingRow };
+            solutionTotal += startingValue;
         }
     }
 }
