@@ -16,11 +16,11 @@ namespace path_of_lowest_cost
             //var testGrid = testGrid8();       // YES, 5, [2, 1, 2, 1, 2]
             //var testGrid = testGrid9();       // YES, 50, [2, 1, 2, 1, 2]
             //var testGrid = testGrid10();      // YES, 5, [3, 3, 3, 3, 3]
-            var testGrid = testGrid11();        // YES, 5, [3, 3, 3, 3, 3]
-            //var testGrid = testGrid12();        // YES, 5, [3, 3, 3, 3, 3]
-            //var testGrid = testGrid13();        // YES, 5, [3, 3, 3, 3, 3]
+            //var testGrid = testGrid11();      // YES, 16, [1, 2, 3, 4, 4, 5]
+            //var testGrid = testGrid12();      // YES, 11, [1, 2, 1, 5, 4, 5]
+            var testGrid = testGrid13();        // NO, 48, [1, 1, 1]
 
-            var challenge = new CodeChallenge2(testGrid);
+            var challenge = new CodeChallenge3(testGrid);
             var result = challenge.SolveChallenge();
 
             Console.WriteLine(result.isSolved);
