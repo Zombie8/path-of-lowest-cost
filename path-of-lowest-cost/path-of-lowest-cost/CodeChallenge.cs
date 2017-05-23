@@ -1,147 +1,108 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace path_of_lowest_cost
 {
     public class CodeChallenge
     {
-        private readonly int _rows;
-        private readonly int _columns;
-        private int[,] _array;
+        private readonly int[,] _grid;
+        private List<ChallengeAttempt> _attempts;
 
-        public int[] selectedColumnValues { get; set; }
-        public int solution { get; set; }
-
-        public CodeChallenge(int rows, int columns)
+        public CodeChallenge(int[,] grid)
         {
-            if (rows <= 0)
-            {
-                throw new ArgumentOutOfRangeException("you must have at least 1 row");
-            }
-
-            if (columns <= 4)
-            {
-                throw new ArgumentOutOfRangeException("columns", "you must have at least 5 columns");
-            }
-
-            _rows = rows;
-            _columns = columns;
-            _array = new int[_rows, _columns];
+            _grid = grid;
+            _attempts = new List<ChallengeAttempt>();
         }
 
-        public int[,] GetArray()
+        public ChallengeAttempt SolveChallenge()
         {
-            return _array;
+            // iterate through each row in grid
+            for (int i = 0; i <= _grid.GetLength(0); i++)
+            {
+                var pathOfLeastCost = AttemptChallenge(i, 0, 0, new List<int>());
+                _attempts.Add(pathOfLeastCost);
+            }
+
+            // determine which iteration was the least cost
+            var leastCostAttempt = _attempts.OrderBy(x => x.solutionTotal).First();
+
+            // return least cost row
+            return leastCostAttempt;
         }
 
-        public void AddValueToArray(int row, int column, int value)
+        private ChallengeAttempt AttemptChallenge(int row, int column, int previousTotal, List<int> previousChosenColumns)
         {
+            // CHECK IF ROW NEEDS TO FLIP TO TOP
             if (row < 0)
             {
-                throw new IndexOutOfRangeException("row must not be a negative number");
+                row = _grid.GetLength(0) - 1;
             }
 
-            if (column < 0)
+            // CHECK IF ROW NEEDS TO FLIP TO BOTTOM
+            if (row > _grid.GetLength(0) - 1)
             {
-                throw new IndexOutOfRangeException("column must not be a negative number");
+                row = 0;
             }
 
-            _array[row, column] = value;
-        }
+            var currentTotal = previousTotal + _grid[row, column];
+            var ChosenColumns = new List<int>(previousChosenColumns);
+            ChosenColumns.Add(row + 1);
 
-        public bool Solve(int startingRowIndex)
+            // EXIT CONDITION 1
+            if (previousTotal > 50) // TOTAL EXCEEDS 50
+            {
+                return new ChallengeAttempt()
+                {
+                    isSolved = "No",
+                    solutionTotal = previousTotal,
+                    selectedMatrixPoints = previousChosenColumns
+                };
+            }
+
+            // EXIT CONDITION 2
+            if (column >= _grid.GetLength(1) - 1) // REACH THE END OF THE MATRIX
+            {
+                return new ChallengeAttempt()
+                {
+                    isSolved = "Yes",
+                    solutionTotal = currentTotal,
+                    selectedMatrixPoints = ChosenColumns
+                };
+            }
+
+            // RECURSIVELY FETCH TOP, MIDDLE, AND BOTTOM VALUES
+            var top = AttemptChallenge(row + 1, column + 1, currentTotal, ChosenColumns);
+            var middle = AttemptChallenge(row, column + 1, currentTotal, ChosenColumns);
+            var bottom = AttemptChallenge(row - 1, column + 1, currentTotal, ChosenColumns);
+
+            // DETERMINE WHICH VALUE TO RETURN WITHIN THIS RECURSIVE FUNCTION
+            if (top.solutionTotal <= middle.solutionTotal && top.solutionTotal < bottom.solutionTotal)
+            {
+                return top;
+            }
+            else if (middle.solutionTotal < bottom.solutionTotal)
+            {
+                return middle;
+            }
+            else
+            {
+                return bottom;
+            }
+        }
+    }
+
+    public class ChallengeAttempt
+    {
+        public string isSolved { get; set; }
+        public int solutionTotal { get; set; }
+        public List<int> selectedMatrixPoints { get; set; }
+
+        public ChallengeAttempt()
         {
-            solution = 0;
-            selectedColumnValues = new int[_columns];
-
-            var rowNumber = 0;
-            var columnNumber = 0;
-
-            var rowMaxHeight = _array.GetLength(0);
-            var columnMaxLength = _array.GetLength(1);
-
-            while (columnNumber < columnMaxLength - 1)
-            {
-                var horizontalValue = _array[rowNumber, columnNumber];
-
-                var tempRowNumber2 = rowNumber - 1;
-                if (tempRowNumber2 < 0)
-                {
-                    tempRowNumber2 = rowMaxHeight - 1;
-                }
-                var lowerValue = _array[tempRowNumber2, columnNumber];
-
-                var direction = GetLeastCost(upperValue, horizontalValue, lowerValue);
-                if (direction == "upper")
-                {
-                    rowNumber = upperValue;
-                    selectedColumnValues[columnNumber] = tempRowNumber + 1;
-                    solution = solution + _array[tempRowNumber, columnNumber];
-                }
-
-                if (direction == "horizontal")
-                {
-                    selectedColumnValues[columnNumber] = rowNumber + 1;
-                    solution = solution + _array[rowNumber, columnNumber];
-                }
-
-                if (direction == "lower")
-                {
-                    rowNumber = lowerValue;
-                    selectedColumnValues[columnNumber] = tempRowNumber2 + 1;
-                    solution = solution + _array[tempRowNumber2, columnNumber];
-                }
-
-                if (solution > 50)
-                {
-                    return false;
-                }
-
-                columnNumber++;
-            }
-
-            return true;
+            selectedMatrixPoints = new List<int>();
         }
-
-        public Tuple<string, int, int[]> Solve2()
-        {
-            var selectedColumns = new int[_columns];
-            var startingIndex = GetStartingIndex();
-
-
-            return new Tuple<string, int, int[]>("test", 1, new int[1] { 1 });
-        }
-
-        public string GetLeastCost(int upper, int horizontal, int lower)
-        {
-            if (upper < horizontal)
-            {
-                if (upper < lower)
-                {
-                    return "upper";
-                }
-            }
-            else if (horizontal < upper)
-            {
-                if(horizontal < lower)
-                {
-                    return "horizontal";
-                }
-            }
-
-            return "lower";
-        }
-
-        //public Tuple<int, int> GetStartingIndex()
-        //{
-        //    int lowestValue;
-        //    int lowestValueRow;
-
-        //    // iterate through each value in column 1 and if the value is the smallest return it
-        //    for(int i = 1; i < _array.GetLength(0); i++)
-        //    {
-
-        //    }
-
-        //}
     }
 }

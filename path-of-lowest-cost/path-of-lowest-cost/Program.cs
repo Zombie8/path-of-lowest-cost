@@ -2,7 +2,7 @@
 
 namespace path_of_lowest_cost
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -20,7 +20,7 @@ namespace path_of_lowest_cost
             //var testGrid = testGrid12();      // YES, 11, [1, 2, 1, 5, 4, 5]
             var testGrid = testGrid13();        // NO, 48, [1, 1, 1]
 
-            var challenge = new CodeChallenge3(testGrid);
+            var challenge = new CodeChallenge(testGrid);
             var result = challenge.SolveChallenge();
 
             Console.WriteLine(result.isSolved);
@@ -36,7 +36,7 @@ namespace path_of_lowest_cost
         //===========================//
         // SINGLE DIMENSION MATRICES //
         //===========================//
-        static int[,] testGrid1()
+        public static int[,] testGrid1()
         {
             int[,] testGrid = new int[1, 5];
             testGrid[0, 0] = 1;
@@ -48,7 +48,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid2()
+        public static int[,] testGrid2()
         {
             int[,] testGrid = new int[1, 5];
             testGrid[0, 0] = 10;
@@ -60,7 +60,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid3()
+        public static int[,] testGrid3()
         {
             int[,] testGrid = new int[1, 5];
             testGrid[0, 0] = 25;
@@ -72,7 +72,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid4()
+        public static int[,] testGrid4()
         {
             int[,] testGrid = new int[1, 5];
             testGrid[0, 0] = 0;
@@ -87,7 +87,7 @@ namespace path_of_lowest_cost
         //===========================//
         // DOUBLE DIMENSION MATRICES //
         //===========================//
-        static int[,] testGrid5()
+        public static int[,] testGrid5()
         {
             int[,] testGrid = new int[2, 5];
             testGrid[0, 0] = 1;
@@ -105,7 +105,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid6()
+        public static int[,] testGrid6()
         {
             int[,] testGrid = new int[2, 5];
             testGrid[0, 0] = 2;
@@ -123,7 +123,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid7()
+        public static int[,] testGrid7()
         {
             int[,] testGrid = new int[2, 5];
             testGrid[0, 0] = 1;
@@ -141,7 +141,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid8()
+        public static int[,] testGrid8()
         {
             int[,] testGrid = new int[2, 5];
             testGrid[0, 0] = 2;
@@ -159,7 +159,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid9()
+        public static int[,] testGrid9()
         {
             int[,] testGrid = new int[2, 5];
             testGrid[0, 0] = 20;
@@ -180,7 +180,7 @@ namespace path_of_lowest_cost
         //===========================//
         // TRIPLE DIMENSION MATRICES //
         //===========================//
-        static int[,] testGrid10()
+        public static int[,] testGrid10()
         {
             int[,] testGrid = new int[3, 5];
             testGrid[0, 0] = 3;
@@ -207,7 +207,7 @@ namespace path_of_lowest_cost
         //===========================//
         // PIXEL EXAMPLE TESTS       //
         //===========================//
-        static int[,] testGrid11()
+        public static int[,] testGrid11()
         {
             int[,] testGrid = new int[5, 6];
             testGrid[0, 0] = 3;
@@ -248,7 +248,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid12()
+        public static int[,] testGrid12()
         {
             int[,] testGrid = new int[5, 6];
             testGrid[0, 0] = 3;
@@ -289,7 +289,7 @@ namespace path_of_lowest_cost
             return testGrid;
         }
 
-        static int[,] testGrid13()
+        public static int[,] testGrid13()
         {
             int[,] testGrid = new int[3, 5];
             testGrid[0, 0] = 19;

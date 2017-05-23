@@ -1,259 +1,132 @@
-<<<<<<< HEAD
-﻿using System;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
+using path_of_lowest_cost;
 
 namespace path_of_lowest_cost.tests
 {
     [TestFixture]
     public class CodeChallengeTests
     {
-        [Test]
-        public void Should_throw_ArgumentOutOfRangeException_with_invalid_column_parameter()
-        {
-            // arrange
-            // nothing to do
-
-            // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(1, 3));
-
-            // assert
-            StringAssert.Contains("you must have at least 5 columns", ex.Message);
-        }
-
-        [Test]
-        public void Should_throw_ArgumentOutOfRangeException_with_invalid_row_parameter()
-        {
-            // arrange
-            // nothing to do
-
-            // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(0, -1));
-
-            // assert
-            StringAssert.Contains("you must have at least 1 row", ex.Message);
-        }
-
         [TestFixture]
-        internal class GetArray
-=======
-﻿using System;
-using NUnit.Framework;
-
-namespace path_of_lowest_cost.tests
-{
-    [TestFixture]
-    public class CodeChallengeTests
-    {
-        [Test]
-        public void Should_throw_ArgumentOutOfRangeException_with_invalid_column_parameter()
-        {
-            // arrange
-            // nothing to do
-
-            // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(1, 3));
-
-            // assert
-            StringAssert.Contains("you must have at least 5 columns", ex.Message);
-        }
-
-        [Test]
-        public void Should_throw_ArgumentOutOfRangeException_with_invalid_row_parameter()
-        {
-            // arrange
-            // nothing to do
-
-            // act
-            var ex = Assert.Throws<ArgumentOutOfRangeException>(() => new CodeChallenge(0, -1));
-
-            // assert
-            StringAssert.Contains("you must have at least 1 row", ex.Message);
-        }
-
-        [TestFixture]
-        internal class GetArray
+        internal class Single_Dimension_Matrices
         {
             [Test]
-            public void Should_return_a_multi_dimensional_array()
+            public void Should_Solve_Challenge1()
             {
                 // arrange
-                var testArray = new int[1, 5];
-                var sut = new CodeChallenge(1, 5);
+                var expectedSelectedMatrixPoints = new List<int>() { 1, 1, 1, 1, 1 };
+
+                int[,] testGrid = Program.testGrid1();
+
+                var sut = new CodeChallenge(testGrid);
 
                 // act
-                var result = sut.GetArray();
+                var result = sut.SolveChallenge();
 
                 // assert
-                Assert.AreEqual(testArray, result);
-            }
-        }
-
-        [TestFixture]
-        internal class AddValueToArray
-        {
-            [Test]
-            public void Should_throw_IndexOutOfRangeException_with_invalid_column_parameter()
-            {
-                // arrange
-                var sut = new CodeChallenge(1, 5);
-
-                // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(1, -2, 1));
-
-                // assert
-                StringAssert.Contains("column must not be a negative number", ex.Message);
+                Assert.That(result.isSolved == "Yes");
+                Assert.That(result.solutionTotal == 5);
+                Assert.That(result.selectedMatrixPoints[0] == expectedSelectedMatrixPoints[0]);
+                Assert.That(result.selectedMatrixPoints[1] == expectedSelectedMatrixPoints[1]);
+                Assert.That(result.selectedMatrixPoints[2] == expectedSelectedMatrixPoints[2]);
+                Assert.That(result.selectedMatrixPoints[3] == expectedSelectedMatrixPoints[3]);
+                Assert.That(result.selectedMatrixPoints[4] == expectedSelectedMatrixPoints[4]);
             }
 
             [Test]
-            public void Should_throw_IndexOutOfRangeException_with_invalid_row_parameter()
+            public void Should_Solve_Challenge2()
             {
                 // arrange
-                var sut = new CodeChallenge(1, 5);
+                var expectedSelectedMatrixPoints = new List<int>() { 1, 1, 1, 1, 1 };
+
+                int[,] testGrid = Program.testGrid2();
+
+                var sut = new CodeChallenge(testGrid);
 
                 // act
-                var ex = Assert.Throws<IndexOutOfRangeException>(() => sut.AddValueToArray(-1, 5, 1));
+                var result = sut.SolveChallenge();
 
                 // assert
-                StringAssert.Contains("row must not be a negative number", ex.Message);
+                Assert.That(result.isSolved == "Yes");
+                Assert.That(result.solutionTotal == 50);
+                Assert.That(result.selectedMatrixPoints[0] == expectedSelectedMatrixPoints[0]);
+                Assert.That(result.selectedMatrixPoints[1] == expectedSelectedMatrixPoints[1]);
+                Assert.That(result.selectedMatrixPoints[2] == expectedSelectedMatrixPoints[2]);
+                Assert.That(result.selectedMatrixPoints[3] == expectedSelectedMatrixPoints[3]);
+                Assert.That(result.selectedMatrixPoints[4] == expectedSelectedMatrixPoints[4]);
             }
 
             [Test]
-            public void Should_insert_positive_value_at_specified_array_location()
+            public void Should_Solve_Challenge3()
             {
                 // arrange
-                var testArray = new int[,] {
-                    {0, 0, 0, 0, 5}
-                };
-                var sut = new CodeChallenge(1, 5);
+                var expectedSelectedMatrixPoints = new List<int>() { 1, 1, 1 };
+
+                int[,] testGrid = Program.testGrid3();
+
+                var sut = new CodeChallenge(testGrid);
 
                 // act
-                sut.AddValueToArray(0, 4, 5);
-                var result = sut.GetArray();
+                var result = sut.SolveChallenge();
 
                 // assert
-                Assert.AreEqual(testArray[0, 4], result[0, 4]);
+                Assert.That(result.isSolved == "No");
+                Assert.That(result.solutionTotal == 51);
+                Assert.That(result.selectedMatrixPoints[0] == expectedSelectedMatrixPoints[0]);
+                Assert.That(result.selectedMatrixPoints[1] == expectedSelectedMatrixPoints[1]);
+                Assert.That(result.selectedMatrixPoints[2] == expectedSelectedMatrixPoints[2]);
             }
 
             [Test]
-            public void Should_insert_negative_value_at_specified_array_location()
+            public void Should_Solve_Challenge4()
             {
                 // arrange
-                var testArray = new int[,] {
-                    {0, 0, 0, 0, -5}
-                };
-                var sut = new CodeChallenge(1, 5);
+                var expectedSelectedMatrixPoints = new List<int>() { 1, 1, 1, 1, 1 };
+
+                int[,] testGrid = Program.testGrid4();
+
+                var sut = new CodeChallenge(testGrid);
 
                 // act
-                sut.AddValueToArray(0, 4, -5);
-                var result = sut.GetArray();
+                var result = sut.SolveChallenge();
 
                 // assert
-                Assert.AreEqual(testArray[0, 4], result[0, 4]);
+                Assert.That(result.isSolved == "Yes");
+                Assert.That(result.solutionTotal == 0);
+                Assert.That(result.selectedMatrixPoints[0] == expectedSelectedMatrixPoints[0]);
+                Assert.That(result.selectedMatrixPoints[1] == expectedSelectedMatrixPoints[1]);
+                Assert.That(result.selectedMatrixPoints[2] == expectedSelectedMatrixPoints[2]);
+                Assert.That(result.selectedMatrixPoints[3] == expectedSelectedMatrixPoints[3]);
+                Assert.That(result.selectedMatrixPoints[4] == expectedSelectedMatrixPoints[4]);
             }
         }
 
         [TestFixture]
-        internal class GetLeastCost
->>>>>>> c52b2bd3c3dcd44d79254b74eec0b58a27714b9b
+        internal class Double_Dimension_Matrices
         {
             [Test]
-            public void Should_return_upper_value()
+            public void Should_Solve_Challenge5()
             {
                 // arrange
-<<<<<<< HEAD
-                var testArray = new int[1, 5];
-=======
->>>>>>> c52b2bd3c3dcd44d79254b74eec0b58a27714b9b
-                var sut = new CodeChallenge(1, 5);
+                var expectedSelectedMatrixPoints = new List<int>() { 1, 1, 1, 1, 1 };
+
+                int[,] testGrid = Program.testGrid5();
+
+                var sut = new CodeChallenge(testGrid);
 
                 // act
-                var result = sut.GetLeastCost(5, 10, 10);
+                var result = sut.SolveChallenge();
 
                 // assert
-                Assert.AreEqual("upper", result);
-            }
-
-            [Test]
-            public void Should_return_horizontal_value()
-            {
-                // arrange
-                var sut = new CodeChallenge(1, 5);
-
-                // act
-                var result = sut.GetLeastCost(10, 5, 10);
-
-                // assert
-                Assert.AreEqual("horizontal", result);
-            }
-
-            [Test]
-            public void Should_return_lower_value()
-            {
-                // arrange
-                var sut = new CodeChallenge(1, 5);
-
-                // act
-                var result = sut.GetLeastCost(10, 10, 5);
-
-                // assert
-                Assert.AreEqual("lower", result);
+                Assert.That(result.isSolved == "Yes");
+                Assert.That(result.solutionTotal == 5);
+                Assert.That(result.selectedMatrixPoints[0] == expectedSelectedMatrixPoints[0]);
+                Assert.That(result.selectedMatrixPoints[1] == expectedSelectedMatrixPoints[1]);
+                Assert.That(result.selectedMatrixPoints[2] == expectedSelectedMatrixPoints[2]);
+                Assert.That(result.selectedMatrixPoints[3] == expectedSelectedMatrixPoints[3]);
+                Assert.That(result.selectedMatrixPoints[4] == expectedSelectedMatrixPoints[4]);
             }
         }
 
-        [TestFixture]
-        internal class Solve2
-        {
-            [Test]
-            public void Should_return_a_tuple_data_structure()
-            {
-                // arrange
-<<<<<<< HEAD
-                var testArray = new int[,] {
-                    {0, 0, 0, 0, 5}
-                };
-                var sut = new CodeChallenge(1, 5);
-
-                // act
-                sut.AddValueToArray(0, 4, 5);
-                var result = sut.GetArray();
-=======
-                var sut = new CodeChallenge(1, 5);
-
-                // act
-                var result = sut.Solve2();
->>>>>>> c52b2bd3c3dcd44d79254b74eec0b58a27714b9b
-
-                // assert
-                Assert.IsInstanceOf<Tuple<string, int, int[]>>(result);
-            }
-
-            [Test]
-            public void Should_return_successful_outcome()
-            {
-                // arrange
-<<<<<<< HEAD
-                var testArray = new int[,] {
-                    {0, 0, 0, 0, -5}
-                };
-                var sut = new CodeChallenge(1, 5);
-=======
-                var expectedresult = new Tuple<string, int, int[]>("Yes", 5, new int[] { 1, 1, 1, 1, 1 });
-
-                var sut = new CodeChallenge(1, 5);
-                sut.AddValueToArray(0, 0, 1);
-                sut.AddValueToArray(0, 1, 1);
-                sut.AddValueToArray(0, 2, 1);
-                sut.AddValueToArray(0, 3, 1);
-                sut.AddValueToArray(0, 4, 1);
->>>>>>> c52b2bd3c3dcd44d79254b74eec0b58a27714b9b
-
-                // act
-                var actualResult = sut.Solve2();
-
-                // assert
-                Assert.AreEqual(expectedresult, actualResult);
-
-            }
-        }
     }
 }
